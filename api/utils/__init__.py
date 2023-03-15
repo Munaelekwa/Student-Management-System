@@ -1,13 +1,14 @@
 from flask_jwt_extended import get_jwt , verify_jwt_in_request
 from functools import wraps
-from flask import jsonify
+from flask import Flask, jsonify
 from flask_mail import Mail, Message
 from http import HTTPStatus
 from ..models.users import User
 import string
 import secrets
-from api import app
 
+
+app = Flask(__name__)
 mail = Mail(app)
 
 app.config['MAIL_SERVER']='smtp.gmail.com'
