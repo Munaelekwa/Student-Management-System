@@ -77,8 +77,8 @@ Continue testing......
 | ROUTE | METHOD | DESCRIPTION | AUTHORIZATION  | USER TYPE |  PLACEHOLDER | 
 | ------- | ----- | ------------ | ------|------- | ----- |
 |  `students/courses/grade` |  _GET_  | It allows student retrieve all registered courses grade | Authenticated | Student | ---- |
-|  `students/<student_id>/courses` |  _GET_  | It allows the retrieval of a student courses   | Authenticated | ---- | A student ID |
-|  `students/<student_id>/gpa` |  _GET_  | Calculate a student gpa score   | Authenticated | Any | A student ID |
+|  `students/courses` |  _GET_  | It allows the retrieval of a student courses   | Authenticated | ---- | A student ID |
+|  `students/gpa` |  _GET_  | Calculate a student gpa score   | Authenticated | Any | A student ID |
 |  `students/courses/add_and_drop` |  _POST_  | It allows student register a course   | Authenticated | Student | ---- |
 |  `students/courses/add_and_drop` |  _DELETE_  | It allows student unregister a course   | Authenticated | Student | ---- |
 
@@ -97,5 +97,5 @@ Continue testing......
 |  `admin/student<student_id>` |  _GET_  | It allows admin to retrieve a particular student | Authenticated | Admin | A Student ID |
 |  `admin/student<student_id>` |  _DELETE_  | It allows admin to remove a particular student | Authenticated | Admin | A Student ID |
 |  `admin/all_students` |  _GET_  | It allows admin to retrieve all students in the school | Authenticated | Admin | ---- |
-|  `admin/course/student/add_score` |  _PUT_  | It allows admin add a student score in a course | Authenticated | Admin | A course ID, A student ID |
-|  `admin/students<student_id>/courses/grade` |  _GET_  | It allows the admin retrieve a student all courses grade   | Authenticated | Admin | A student ID |
+|  `admin/student/course/add_score` |  _PUT_  | It allows admin add a student score in a course | Authenticated | Admin | A course ID, A student ID |
+|  `admin/student<student_id>/courses/grade` |  _GET_  | It allows the admin retrieve a student all courses grade   | Authenticated | Admin | A student ID |

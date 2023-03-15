@@ -22,15 +22,17 @@ courses_serializer = students_namespace.model('Student and course list', course_
 courses_add_serializer = students_namespace.model('Add courses', course_fields_serializer)
 
 
-@students_namespace.route('/<int:student_id>/courses')
+@students_namespace.route('/courses')
 class StudentCoursesListView(Resource):
 
     @students_namespace.marshal_with(courses_serializer)
+    @student_required()
     def get(self, student_id):
         """
         Retrieve a student courses
-        """     
-        courses = StudentCourse.get_student_courses(student_id)
+        """  
+        authenticated_student_id = get_jwt_identity()   
+        courses = StudentCourse.get_student_courses(id=authenticated_student_id)
         return courses , HTTPStatus.OK
 
 
@@ -106,7 +108,7 @@ class StudentCourseRegisterView(Resource):
         return {'message': 'Course does not exist'} , HTTPStatus.NOT_FOUND
     
     
-@students_namespace.route('/grade')
+@students_namespace.route('/courses/grade')
 class CoursesGradeListView(Resource):
 
     @students_namespace.doc(
@@ -139,14 +141,17 @@ class CoursesGradeListView(Resource):
         return response , HTTPStatus.OK    
 
      
-@students_namespace.route('/<int:student_id>/gpa')
+@students_namespace.route('/gpa')
 class StudentGPAView(Resource):
 
-    def get(self, student_id):
+
+    @student_required()
+    def get(self):
         """
         Calculate a student gpa score
-        """     
-        student = Student.get_by_id(student_id)
+        """    
+        authenticated_student_id = get_jwt_identity()
+        student = Student.get_by_id(id=authenticated_student_id)
         # get all the course the students offer
         courses = StudentCourse.get_student_courses(student.id)
         total_weighted_gpa = 0

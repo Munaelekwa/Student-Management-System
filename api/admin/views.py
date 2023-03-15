@@ -266,7 +266,7 @@ class StudentRetrieveDeleteUpdateView(Resource):
             return {'message': 'An error occurred while removing this student'}, HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@admin_namespace.route('/course/add_score')
+@admin_namespace.route('/student/course/add_score')
 class StudentCourseScoreAddView(Resource):
 
     @admin_namespace.expect(student_score_add_serializer)
@@ -311,7 +311,7 @@ class StudentCourseScoreAddView(Resource):
         return {'message': 'The student is not registered for this course'}, HTTPStatus.BAD_REQUEST
     
 
-admin_namespace.route('/<int:student_id>/courses/grade')
+admin_namespace.route('/student<int:student_id>/courses/grade')
 class StudentCoursesGradeListView(Resource):
 
     @admin_required()
