@@ -1,5 +1,7 @@
 # Student-Management-System
 
+Student Management System is a web api built with flask. It contains functionality that enables an admin manage student accounts, create courses and also allows students register and unregister courses.
+
 Note: This is currently under active development
 
 ## Table of Contents
@@ -15,7 +17,7 @@ Note: This is currently under active development
 
 ## Live ( deployed version ) 
 
-Visit [website](http://olakaycoder1.pythonanywhere.com/)
+Visit [website](http://Munaelekwa.pythonanywhere.com/)
 ## Testing Locally
 
 Clone the repository

@@ -14,8 +14,11 @@ from flask_jwt_extended import JWTManager
 from werkzeug.exceptions import NotFound, MethodNotAllowed
 
 
+app = Flask(__name__)
+
+
 def create_app(config=config_dict['dev']):
-    app = Flask(__name__)
+    
     app.config.from_object(config)
 
     db.init_app(app)
@@ -32,6 +35,7 @@ def create_app(config=config_dict['dev']):
             "description": "Add a JWT token to the header with ** Bearer &lt;JWT&gt; ** token to authorize"
         }
     }
+
 
     api = Api(
         app,

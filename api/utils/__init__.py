@@ -1,19 +1,22 @@
 from flask_jwt_extended import get_jwt , verify_jwt_in_request
 from functools import wraps
 from flask import jsonify
+from flask_mail import Mail, Message
 from http import HTTPStatus
 from ..models.users import User
-import smtplib, ssl
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import smtplib
 import string
 import secrets
+from api import app
 
+mail = Mail(app)
 
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'studentmanagementsystem34@gmail.com'
+app.config['MAIL_PASSWORD'] = 'mwym uuxh slee moeb'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
 
-sender_email = 'studentmanagementsystem34@gmail.com'
-password = 'gidu udsn czkl kigb'
 
 def random_char(length):
     """ Generate a random string 
@@ -103,22 +106,17 @@ def convert_grade_to_gpa(grade):
         return 0.0
 
 class MailServices():
+
+
+
     def student_details_mail(self, student_email , student_name, student_reg_no, student_password ):
         """
         Send a mail containing student details(reg_no, password) to a registered student
+
         """
-        message = MIMEMultipart("alternative")
-        message["Subject"] = "Your Student Details"
-        message["From"] = sender_email
-        message["To"] = student_email
-        html = (f"Dear {student_name}, \nYou were registered successfully on the student portal. Here are your login details: \nRegistration number: {student_reg_no} \npassword: {student_password}")
-        part = MIMEText(html, "html")
-        # Add HTML/plain-text parts to MIMEMultipart message
-        message.attach(part)
-        # Create secure connection with server and send email
-        context = ssl.create_default_context()
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
-            server.login(sender_email, password)
-            server.sendmail(
-                sender_email, student_email, message.as_string()
-            )
+        msg = Message("Your Student Details", sender = 'studentmanagementsystem34@gmail.com', recipients = [{student_email}])
+        msg.body = f"Dear {student_name}, \nYou were registered successfully on the student portal. Here are your login details: \nRegistration number: {student_reg_no} \npassword: {student_password}"
+        mail.send(msg)
+        return "Email Sent successfully"
+
+        
