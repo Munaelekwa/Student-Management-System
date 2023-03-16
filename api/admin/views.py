@@ -102,7 +102,7 @@ class CourseRetrievalView(Resource):
         """
         Delete a course
         """
-        course = Course.query.filter_by(course_id).first()
+        course = Course.query.filter_by(id=course_id).first()
         if not course:
             return {'message':'Course does not exist'}, HTTPStatus.NOT_FOUND
         try:

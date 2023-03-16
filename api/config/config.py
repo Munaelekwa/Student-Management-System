@@ -15,11 +15,7 @@ class DevConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///'+os.path.join(BASE_DIR, 'db.sqlite3')
-    MAIL_SERVER='smtp.gmail.com'
-    MAIL_PORT = 587
-    MAIL_USERNAME = 'studentmanagementsystem34@gmail.com'
-    MAIL_PASSWORD= 'mwym uuxh slee moeb'
-    MAIL_USE_TLS = True
+    
 
 class TestConfig(Config):
     TESTING = True

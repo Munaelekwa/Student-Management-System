@@ -8,8 +8,17 @@ import string
 import secrets
 
 app = Flask(__name__)
-mail = Mail(app)
 
+app.config.update(dict(
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT = 465,
+    MAIL_USERNAME = 'studentmanagementsystem34@gmail.com',
+    MAIL_PASSWORD= 'mwym uuxh slee moeb',
+    MAIL_USE_SSL = True,
+    MAIL_USE_TLS = False
+))
+
+mail = Mail(app)
 
 def random_char(length):
     """ Generate a random string 
@@ -99,13 +108,14 @@ def convert_grade_to_gpa(grade):
         return 0.0
 
 class MailServices():
-
+   
     def student_details_mail(self, student_email , student_name, student_reg_no, student_password ):
         """
         Send a mail containing student details(reg_no, password) to a registered student
 
         """
-        msg = Message("Your Student Details", sender = 'studentmanagementsystem34@gmail.com', recipients = [{student_email}])
+        
+        msg = Message("Your Student Details", sender = "studentmanagementsystem34@gmail.com", recipients = [student_email])
         msg.body = f"Dear {student_name}, \nYou were registered successfully on the student portal. Here are your login details: \nRegistration number: {student_reg_no} \npassword: {student_password}"
         mail.send(msg)
         return "Email Sent successfully"
