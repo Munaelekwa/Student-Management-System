@@ -7,7 +7,6 @@ from ..models.users import User
 import string
 import secrets
 
-
 app = Flask(__name__)
 mail = Mail(app)
 

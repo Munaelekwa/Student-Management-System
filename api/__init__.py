@@ -9,19 +9,19 @@ from .models.students import Student
 from .models.courses import Course, StudentCourse, Score
 from .models.users import User, Admin
 from flask_migrate import Migrate 
+from flask_mail import Mail
 from pathlib import Path 
 from flask_jwt_extended import JWTManager
 from werkzeug.exceptions import NotFound, MethodNotAllowed
 
-
-app = Flask(__name__)
-
-
 def create_app(config=config_dict['dev']):
     
+    app = Flask(__name__)
     app.config.from_object(config)
 
     db.init_app(app)
+
+    mail = Mail(app)
 
     jwt = JWTManager(app)
 
