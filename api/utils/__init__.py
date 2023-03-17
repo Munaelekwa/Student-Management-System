@@ -117,7 +117,7 @@ class MailServices():
 
         """
         
-        msg = Message("Your Student Details", sender = "studentmanagementsystem34@gmail.com", recipients = [student_email])
+        msg = Message("Your Student Details", sender = ("Admin at S M S", "studentmanagementsystem34@gmail.com"), recipients = [student_email])
         msg.body = f"Dear {student_name}, \nYou were registered successfully on the student portal. \nYour Registration number is {student_reg_no} \nUse your registration number as password to access your student account"
         mail.send(msg)
         return "Email Sent successfully"

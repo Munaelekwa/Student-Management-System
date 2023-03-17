@@ -181,7 +181,8 @@ class StudentRegistrationView(Resource):
         except:
             db.session.rollback()
             return {'message': 'An error occurred while saving user'}, HTTPStatus.INTERNAL_SERVER_ERROR
-        return {'message': 'User registered successfully as a {}'.format(new_user.user_type)}, HTTPStatus.CREATED, mail.student_details_mail(new_user.email, data.get('first_name'), new_user.reg_no)
+        mail.student_details_mail(new_user.email, data.get('first_name'), new_user.reg_no)
+        return {'message': 'User registered successfully as a {}'.format(new_user.user_type)}, HTTPStatus.CREATED 
 
 @auth_namespace.route('/logout')
 class Logout(Resource):

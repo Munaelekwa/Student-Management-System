@@ -17,7 +17,7 @@ Note: This is currently under active development
 
 ## Live ( deployed version ) 
 
-Visit [website](http://Munaelekwa.pythonanywhere.com/)
+Visit [website](http://munaelekwa.pythonanywhere.com/)
 ## Testing Locally
 
 Clone the repository
@@ -72,7 +72,8 @@ Continue testing......
 |  `auth/register` | _POST_ | It allows the  creation of an admin account   | Any | Any |  ---- | 
 |  `auth/register/student` |  _POST_ | It allows an admin create a student account   | Authenticated | Admin | ---- | 
 |  `auth/login` |  _POST_  | It allows user authentication   | Any | Any | ---- | 
-|  `auth/login/refresh` |  _POST_  | It allows user refresh their tokens   | Authenticated | Any | ---- | 
+|  `auth/refresh` |  _POST_  | It allows user refresh their tokens   | Authenticated | Any | ---- |
+|  `auth/logout` |  _POST_  | It allows user refresh their tokens   | Authenticated | Any | ---- | 
 
 
 ### Students Endpoint
