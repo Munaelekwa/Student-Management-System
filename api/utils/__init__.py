@@ -20,6 +20,8 @@ app.config.update(dict(
 
 mail = Mail(app)
 
+BLACKLIST = set()
+
 def random_char(length):
     """ Generate a random string 
     param:
@@ -109,15 +111,17 @@ def convert_grade_to_gpa(grade):
 
 class MailServices():
    
-    def student_details_mail(self, student_email , student_name, student_reg_no, student_password ):
+    def student_details_mail(self, student_email , student_name, student_reg_no ):
         """
         Send a mail containing student details(reg_no, password) to a registered student
 
         """
         
         msg = Message("Your Student Details", sender = "studentmanagementsystem34@gmail.com", recipients = [student_email])
-        msg.body = f"Dear {student_name}, \nYou were registered successfully on the student portal. Here are your login details: \nRegistration number: {student_reg_no} \npassword: {student_password}"
+        msg.body = f"Dear {student_name}, \nYou were registered successfully on the student portal. \nYour Registration number is {student_reg_no} \nUse your registration number as password to access your student account"
         mail.send(msg)
         return "Email Sent successfully"
+
+
 
         

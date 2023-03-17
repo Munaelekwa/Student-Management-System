@@ -4,7 +4,7 @@ from datetime import datetime
 from flask_jwt_extended import (
     create_access_token, 
     jwt_required, get_jwt_identity ,
-    create_refresh_token
+    create_refresh_token, get_jwt
 )
 from werkzeug.security import (
     check_password_hash , 
@@ -14,7 +14,7 @@ from flask import  request
 from flask_restx import Namespace, Resource
 from ..models.students import Student
 from ..models.users import User, Admin
-from ..utils import admin_required, random_char, MailServices
+from ..utils import admin_required, random_char, MailServices, BLACKLIST
 from ..db import db
 
 mail = MailServices()
@@ -92,7 +92,7 @@ class AdminRegistrationView(Resource):
 
 
 # Route for Token refresh 
-@auth_namespace.route('/login/refresh')
+@auth_namespace.route('/refresh')
 class Refresh(Resource):
     @auth_namespace.doc(
         description="""
@@ -165,9 +165,9 @@ class StudentRegistrationView(Resource):
             return {'message': 'User already exists'} , HTTPStatus.CONFLICT
         
         current_year =  str(datetime.now().year)
-        a = 1
+        a = random_char(4)
         reg_no= f"{current_year}/STD{a}"
-        password = random_char(10)
+        password = reg_no
         
         new_user =  Student(
             email=data.get('email'), 
@@ -176,15 +176,25 @@ class StudentRegistrationView(Resource):
             user_type='student',
             password_hash=generate_password_hash(password),
         )
-        a = new_user.id
         try:
             new_user.save()
         except:
             db.session.rollback()
             return {'message': 'An error occurred while saving user'}, HTTPStatus.INTERNAL_SERVER_ERROR
-        return {'message': 'User registered successfully as a {}'.format(new_user.user_type)}, HTTPStatus.CREATED, mail.student_details_mail(new_user.email, data.get('first_name'), new_user.reg_no, password)
+        return {'message': 'User registered successfully as a {}'.format(new_user.user_type)}, HTTPStatus.CREATED, mail.student_details_mail(new_user.email, data.get('first_name'), new_user.reg_no)
 
-
+@auth_namespace.route('/logout')
+class Logout(Resource):
+    @jwt_required(verify_type=False)
+    def post(self):
+        """
+            Revoke Access/Refresh Token
+        """
+        token = get_jwt()
+        jti = token["jti"]
+        token_type = token["type"]
+        BLACKLIST.add(jti)
+        return {"message": f"{token_type.capitalize()} token successfully revoked"}, HTTPStatus.OK
 
 
 
