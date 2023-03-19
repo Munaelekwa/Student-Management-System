@@ -103,7 +103,8 @@ class CourseRetrievalView(Resource):
         course = Course.query.filter_by(id=course_id).first()
         if not course:
             return {'message':'Course does not exist'}, HTTPStatus.NOT_FOUND
-        data = admin_namespace.payload
+        data = request.json()
+        
         course.name=data['name'],
         course.course_code=data['course_code'],
         course.unit_load=data['unit_load'],
@@ -160,7 +161,7 @@ class CourseRetrievalView(Resource):
         student_id = data.get('student_id')
         # check if student and course exist
         student = Student.query.filter_by(id=student_id).first()
-        course = Course.query.filter_by(course_id).first()
+        course = Course.query.filter_by(id=course_id).first()
         if not student or not course:
             return {'message': 'Student or course not found'}, HTTPStatus.NOT_FOUND
         if student:
@@ -197,7 +198,7 @@ class CourseRetrievalView(Resource):
         student_id = data.get('student_id')
         # check if student and course exist
         student = Student.query.filter_by(id=student_id).first()
-        course = Course.query.filter_by(course_id).first()
+        course = Course.query.filter_by(id=course_id).first()
         if not student or not course:
             return {'message': 'Student or course not found'}, HTTPStatus.NOT_FOUND
         if student:
@@ -285,7 +286,7 @@ class StudentRetrieveDeleteUpdateView(Resource):
         if not student:
             return {'message':'Student does not exist'}, HTTPStatus.NOT_FOUND
             
-        data = admin_namespace.payload
+        data = request.json()
 
         student.first_name = data['first_name']
         student.last_name = data['last_name']

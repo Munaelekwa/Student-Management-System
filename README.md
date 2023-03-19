@@ -82,8 +82,8 @@ Continue testing......
 |  `students/courses/grade` |  _GET_  | It allows student retrieve all registered courses grade | Authenticated | Student | ---- |
 |  `students/courses` |  _GET_  | It allows the retrieval of a student courses   | Authenticated | ---- | A student ID |
 |  `students/gpa` |  _GET_  | Calculate a student gpa score   | Authenticated | Any | A student ID |
-|  `students/courses/add_and_drop` |  _POST_  | It allows student register a course   | Authenticated | Student | ---- |
-|  `students/courses/add_and_drop` |  _DELETE_  | It allows student unregister a course   | Authenticated | Student | ---- |
+|  `students/course<course_id>/add_and_drop` |  _POST_  | It allows student register a course   | Authenticated | Student | ---- |
+|  `students/course<course_id>/add_and_drop` |  _DELETE_  | It allows student unregister a course   | Authenticated | Student | ---- |
 
 
 

@@ -1,6 +1,5 @@
 from ..utils import student_required, convert_grade_to_gpa
 from ..db import db
-from flask import request
 from ..models.courses import Student, StudentCourse , Course , Score
 from flask_jwt_extended import  get_jwt_identity  
 from flask_restx import Namespace, Resource
@@ -35,11 +34,10 @@ class StudentCoursesListView(Resource):
         return courses , HTTPStatus.OK
 
 
-@students_namespace.route('/courses/add_and_drop')
+@students_namespace.route('/course<int:course_id>/add_and_drop')
 class StudentCourseRegisterView(Resource):
 
     @students_namespace.marshal_with(courses_serializer)
-    @students_namespace.expect(courses_add_serializer)
     @students_namespace.doc(
         description="""
             This endpoint is accessible only to a student. 
@@ -47,14 +45,13 @@ class StudentCourseRegisterView(Resource):
             """
     )
     @student_required()  
-    def post(self):
+    def post(self, course_id):
         """ 
         Register for a course 
         """     
         authenticated_user_id = get_jwt_identity() 
         student = Student.query.filter_by(id=authenticated_user_id).first()   
-        data = request.get_json()
-        course = Course.query.filter_by(id=data.get('course_id')).first()  
+        course = Course.get_by_id(course_id) 
         if course:
             #check if student has registered for the course before
             get_student_in_course = StudentCourse.query.filter_by(student_id=student.id, course_id=course.id).first()
@@ -73,7 +70,6 @@ class StudentCourseRegisterView(Resource):
         return {'message': 'Course does not exist'} , HTTPStatus.NOT_FOUND
 
 
-    @students_namespace.expect(courses_add_serializer)
     @students_namespace.doc(
         description="""
             This endpoint is accessible only to a student. 
@@ -81,15 +77,13 @@ class StudentCourseRegisterView(Resource):
             """
     )
     @student_required()
-    def delete(self):
+    def delete(self, course_id):
         """
         Unregister a  course
         """
-        data = request.get_json()
         authenticated_user_id = get_jwt_identity()
         student = Student.query.filter_by(id=authenticated_user_id).first()   
-        data = request.get_json()
-        course = Course.query.filter_by(id=data.get('course_id')).first()  
+        course = Course.get_by_id(course_id)
         if course:
             #check if student has registered for the course before
             get_student_in_course = StudentCourse.query.filter_by(student_id=student.id, course_id=course.id).first()
@@ -150,7 +144,7 @@ class StudentGPAView(Resource):
         Calculate a student gpa score
         """    
         authenticated_student_id = get_jwt_identity()
-        student = Student.get_by_id(id=authenticated_student_id)
+        student = Student.get_by_id(authenticated_student_id)
         # get all the course the students offer
         courses = StudentCourse.get_student_courses(student.id)
         total_weighted_gpa = 0
