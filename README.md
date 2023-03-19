@@ -94,11 +94,13 @@ Continue testing......
 |  `admin/courses` |  _POST_  | It allows the creation of a new course   | Authenticated | Admin | ---- |
 |  `admin/courses/<course_id>` |  _DELETE_  | It allows deleting a course   | Authenticated | Admin | ---- |
 |  `admin/courses/<course_id>` |  _GET_  | It allows the retrieval of a particular course   | Authenticated | Admin | A course ID |
+|  `admin/courses/<course_id>` |  _PUT_  | It allows the update of a particular course   | Authenticated | Admin | A course ID |
 |  `admin/course<course_id>/students` |  _GET_  | It allows the  retrieval of all students registered for a course | Authenticated | Admin | A course ID |
 |  `admin/course<course_id>/students/add_and_drop` |  _POST_  | It allows admin to add a student to a course | Authenticated | Admin | A course ID |
 |  `admin/course<course_id>/students/add_and_drop` |  _DELETE_  | It allows admin to remove a  student from a course | Authenticated | Admin | A course ID |
 |  `admin/student<student_id>` |  _GET_  | It allows admin to retrieve a particular student | Authenticated | Admin | A Student ID |
 |  `admin/student<student_id>` |  _DELETE_  | It allows admin to remove a particular student | Authenticated | Admin | A Student ID |
+|  `admin/student<student_id>` |  _PUT_  | It allows admin to update details for a particular student | Authenticated | Admin | A Student ID |
 |  `admin/all_students` |  _GET_  | It allows admin to retrieve all students in the school | Authenticated | Admin | ---- |
 |  `admin/student/course/add_score` |  _PUT_  | It allows admin add a student score in a course | Authenticated | Admin | A course ID, A student ID |
 |  `admin/student<student_id>/courses/grade` |  _GET_  | It allows the admin retrieve a student all courses grade   | Authenticated | Admin | A student ID |

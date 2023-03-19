@@ -80,7 +80,7 @@ class CoursesListView(Resource):
 
 
 
-@admin_namespace.route('/course<int:course_id>')
+@admin_namespace.route('/course/<int:course_id>')
 class CourseRetrievalView(Resource):
 
     @admin_namespace.marshal_with(course_retrieve_serializer)
@@ -91,6 +91,31 @@ class CourseRetrievalView(Resource):
         course = Course.get_by_id(course_id)
         return course , HTTPStatus.OK
     
+    @admin_namespace.doc(
+        description="""
+            This endpoint is accessible to an admin. 
+            It allows admin update a course
+            """
+    )
+    @admin_required()
+    @admin_namespace.marshal_with(course_creation_serializer)
+    def put(self, course_id):
+        course = Course.query.filter_by(id=course_id).first()
+        if not course:
+            return {'message':'Course does not exist'}, HTTPStatus.NOT_FOUND
+        data = admin_namespace.payload
+        course.name=data['name'],
+        course.course_code=data['course_code'],
+        course.unit_load=data['unit_load'],
+        course.teacher_name=f"{data['teacher_first_name']} {data['teacher_last_name']}"
+
+        try:
+            course.update()
+            return {'message': 'Course updated successfully!'}, HTTPStatus.OK
+        except:
+            db.session.rollback()
+            return {'message': 'An error occured while updating course.'}, HTTPStatus.INTERNAL_SERVER_ERROR
+        
     @admin_namespace.doc(
         description="""
             This endpoint is accessible to an admin. 
@@ -186,7 +211,7 @@ class CourseRetrievalView(Resource):
                     db.session.rollback()
                     return {'message': 'An error occurred while deleting student course'}, HTTPStatus.INTERNAL_SERVER_ERROR
             return {
-                    'message':'{} has not register for this course'.format(student.name)
+                    'message':'{} is not registered for this course'.format(student.name)
                     } , HTTPStatus.BAD_REQUEST
     
 
@@ -249,6 +274,31 @@ class StudentRetrieveDeleteUpdateView(Resource):
         if not student:
             return {'message':'Student does not exist'}, HTTPStatus.NOT_FOUND
         return student , HTTPStatus.OK
+
+    @admin_required()
+    def put(self, student_id):
+        """
+            Update a Student's Details
+        """
+        
+        student = Student.query.filter_by(id=student_id).first()
+        if not student:
+            return {'message':'Student does not exist'}, HTTPStatus.NOT_FOUND
+            
+        data = admin_namespace.payload
+
+        student.first_name = data['first_name']
+        student.last_name = data['last_name']
+        student.email = data['email']
+
+        try:
+            student.update()
+            return {'message': 'Student details updated successfully!'}, HTTPStatus.OK
+        except:
+            db.session.rollback()
+            return {'message': 'An error occurred while updating student details'}, HTTPStatus.INTERNAL_SERVER_ERROR
+
+
     
     @admin_required()
     def delete(self, student_id):

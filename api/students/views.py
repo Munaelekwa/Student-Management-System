@@ -1,8 +1,7 @@
-from ..utils import admin_required, student_required, convert_grade_to_gpa
+from ..utils import student_required, convert_grade_to_gpa
 from ..db import db
 from flask import request
 from ..models.courses import Student, StudentCourse , Course , Score
-from ..models.users import User 
 from flask_jwt_extended import  get_jwt_identity  
 from flask_restx import Namespace, Resource
 from .serializers import (
@@ -27,7 +26,7 @@ class StudentCoursesListView(Resource):
 
     @students_namespace.marshal_with(courses_serializer)
     @student_required()
-    def get(self, student_id):
+    def get(self):
         """
         Retrieve a student courses
         """  
