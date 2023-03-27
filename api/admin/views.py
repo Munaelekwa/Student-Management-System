@@ -103,12 +103,11 @@ class CourseRetrievalView(Resource):
         course = Course.query.filter_by(id=course_id).first()
         if not course:
             return {'message':'Course does not exist'}, HTTPStatus.NOT_FOUND
-        data = request.json()
         
-        course.name=data['name'],
-        course.course_code=data['course_code'],
-        course.unit_load=data['unit_load'],
-        course.teacher_name=f"{data['teacher_first_name']} {data['teacher_last_name']}"
+        course.name = request.json['name']
+        course.course_code = request.json['course_code']
+        course.unit_load = request.json['unit_load']
+        course.teacher_name=f"{request.json['teacher_first_name']} {request.json['teacher_last_name']}"
 
         try:
             course.update()
@@ -286,11 +285,11 @@ class StudentRetrieveDeleteUpdateView(Resource):
         if not student:
             return {'message':'Student does not exist'}, HTTPStatus.NOT_FOUND
             
-        data = request.json()
+        
 
-        student.first_name = data['first_name']
-        student.last_name = data['last_name']
-        student.email = data['email']
+        student.first_name = request.json['first_name']
+        student.last_name = request.json['last_name']
+        student.email = request.json['email']
 
         try:
             student.update()
@@ -332,7 +331,7 @@ class StudentCourseScoreAddView(Resource):
         """
         Add a student course score
         """     
-        authenticated_user_id = get_jwt_identity()
+
         student_id = request.json['student_id']
         course_id = request.json['course_id']
         score_value = request.json['score']   
